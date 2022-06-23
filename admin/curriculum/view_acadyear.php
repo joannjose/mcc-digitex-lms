@@ -20,6 +20,8 @@
         <th>ID</th>
         <th class="thborderleft">Name</th>
         <th>Year</th>
+        <th>startYear</th>
+        <th>endYear</th>
         <th>Semester</th>
         <th>Status</th>
         <th>Archived</th>
@@ -167,26 +169,27 @@ var tableYear = $('#viewAcadYear').DataTable(
         "serverside": true,
         "ajax": "../admin/curriculum/functions/server_processing.php",
 
-        order: [[4, 'desc']],
+        order: [[6, 'desc']],
+        //order: [[2, 'asc']],
         "columnDefs":[
         {             // toggle visiblity of status and archived column
-            "targets": [0,4,5] ,
+            "targets": [0,3,4,6,7] ,
             "visible": false ,
             "searchable": false
         },
         {             // centers column header and row data
-            "targets": [0,1,2,3] ,
+            "targets": [0,1,2,3,5] ,
             className: "dt-center",
         },
         {             // disables ordering of certain columns
-            "targets": [1,3] ,
-            "orderable": false
+            "targets": [1,2,5],
+            "orderable": false,
         },
         {
-            "targets": [6] ,    // populate options column
+            "targets": [8] ,    // populate options column
             "orderable": false, 
             className: "dt-center",
-            "data":4,
+            "data":6,
             "render": function(data,type,row){
                 var active = 
                 "<button type='button' disabled class='btn btn-success'>Currently Active</button>";
@@ -198,7 +201,6 @@ var tableYear = $('#viewAcadYear').DataTable(
                 if(data==1){
                     $('#currentActive').text(row[1]);
                     $('#currentActiveYear').text(row[1]);
-                    //console.log(row[2])
                     return active 
                 }
                 else{
@@ -220,6 +222,9 @@ var tableYear = $('#viewAcadYear').DataTable(
     $('#viewAcadYear').on('click','#editBtn',function()
     {
         var data = tableYear.row($(this).parents('tr')).data();
+        document.getElementById("editStartYear").value = data[3];
+        document.getElementById("editEndYear").value = data[4];
+        document.getElementById("editSem").value = data[5];
         document.getElementById("editID").value = data[0];
     }
     );
